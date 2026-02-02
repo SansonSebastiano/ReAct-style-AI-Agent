@@ -1,0 +1,10 @@
+langgraph          
+langchain
+langchain-openai   
+
+plotly             
+pandas            
+
+python-dotenv      
+docker             
+pydantic           
