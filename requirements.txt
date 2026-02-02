@@ -1,10 +1,12 @@
-langgraph          
-langchain
-langchain-openai   
+langgraph>=0.0.20
+langchain>=0.1.0
+langchain-google-genai>=1.0.0
 
-plotly             
-pandas            
+plotly>=5.18.0
+pandas>=2.1.0
+kaleido>=0.2.1 
 
-python-dotenv      
-docker             
-pydantic           
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+
+docker>=7.0.0
