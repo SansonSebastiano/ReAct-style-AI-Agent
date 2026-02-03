@@ -24,6 +24,15 @@ def execute_python_code(code: str) -> str:
     logger.info(f"Executing code:\n{code[:200]}...")
     result = sandbox.execute_code(code)
 
+    # if result["success"]:
+    #     logger.info("Code executed successfully.")
+    #     if result["plot_path"]:
+    #         logger.info(f"Generated plot available at: {result['plot_path']}")
+    #         output = 1 if result["success"] and result["plot_path"] else 0
+    # else:
+    #     logger.error(f"Code execution failed with error:\n{result['stderr']}")
+    #     return 0
+
     if result["success"]:
         output = f"Code executed successfully.\n{result['stdout']}"
         if result["plot_path"]:

@@ -160,14 +160,20 @@ Respond with ONLY the Python code, wrapped in ```python code blocks."""
         else:
             # Execute the code using the tool
             observation = execute_python_code.invoke({"code": code})
-        
-        logger.info(f"Observation: {observation[:200]}...")
+
+            task_complete = (
+                "Code executed successfully" in observation 
+                and "Generated plot available at:" in observation
+            )
+
+            if task_complete:
+                logger.info("Task automatically marked complete after successful execution")
         
         return {
             "messages": [AIMessage(content=f"**Observation:** {observation}")],
             "iteration": state["iteration"] + 1,
             "max_iterations": state["max_iterations"],
-            "task_complete": False
+            "task_complete": task_complete
         }
     
     def _should_continue(self, state: AgentState) -> Literal["continue", "end"]:
