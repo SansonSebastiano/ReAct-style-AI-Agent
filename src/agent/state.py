@@ -3,8 +3,16 @@ from langchain_core.messages import BaseMessage
 import operator
 
 class AgentState(TypedDict):
-    """State for the ReAct agent."""
-    messages: Annotated[list[BaseMessage], operator.add]    # To accumulate conversation history between user and agent
-    iteration: int          # To track the iterations in the ReAct loop
-    max_iterations: int     # Maximum allowed iterations
-    task_complete: bool     # Whether the task is complete
+    """
+    State for the ReAct agent.
+
+    Attributes:
+        messages (list[BaseMessage]): Conversation history between the user and the agent.
+        iteration (int): Current iteration count of the agent's reasoning loop.
+        max_iterations (int): Maximum allowed iterations for the agent.
+        task_complete (bool): Flag indicating whether the task has been completed.
+    """
+    messages: Annotated[list[BaseMessage], operator.add]   
+    iteration: int          
+    max_iterations: int     
+    task_complete: bool     

@@ -8,7 +8,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 class CodeSandbox:
-    """A sandbox environment to safely execute generated code."""
+    """
+    A sandbox environment to safely execute generated code.
+
+    Attributes:
+        timeout (int): Maximum time in seconds to allow for code execution.
+        output_dir (str): Directory to save any generated output files 
+    """
 
     def __init__(self, timeout: int = 30, output_dir: str = "output"):
         self.timeout = timeout
@@ -22,19 +28,24 @@ class CodeSandbox:
             code (str): The code to execute.
 
         Returns:
-            dict: A dictionary containing execution output and any generated files. The keys of the dictionary are: `success` (bool), `stdout` (str), `stderr` (str), `plot_path` (str | None).
+            dict: A dictionary containing execution output and any generated files. The keys of the dictionary are: 
+                - `success` (bool), 
+                - `stdout` (str), 
+                - `stderr` (str), 
+                - `plot_path` (str | None).
         """    
 
+        # Create a temporary directory for code execution
         with tempfile.TemporaryDirectory() as temp_dir:
             code_file = Path(temp_dir) / "script.py"
             code_file.write_text(code)
 
             try:
                 result = subprocess.run(
-                    [sys.executable, str(code_file)],
-                    cwd=temp_dir,
-                    timeout=self.timeout,
-                    capture_output=True,
+                    [sys.executable, str(code_file)],   # Use the current Python interpreter to run the script
+                    cwd=temp_dir,               # Set the temp directory as the working directory
+                    timeout=self.timeout,       
+                    capture_output=True,        
                     text=True,
                     env={
                         **os.environ,  
@@ -47,12 +58,12 @@ class CodeSandbox:
                 logger.info(f"Stderr length: {len(result.stderr)}")
 
                 plot_path = None    
-                output_file = Path(temp_dir) / "output.html"
+                output_file = Path(temp_dir) / "output.html"        
                 if output_file.exists():
                     import time
-                    plot_name = f"plot_{int(time.time())}.html"
-                    plot_path = self.output_dir / plot_name
-                    output_file.rename(plot_path)
+                    plot_name = f"plot_{int(time.time())}.html"     # Setting unique name based on timestamp
+                    plot_path = self.output_dir / plot_name         # Move the plot to the predefined output directory
+                    output_file.rename(plot_path)                   
 
                 logger.info(f"Code executed successfully. Output path: {plot_path}")
 

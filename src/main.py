@@ -46,8 +46,6 @@ def check_api_key():
 def main():    
     if not check_api_key():
         return
-
-    # Initialize the agent
     
     run_example()
 
@@ -56,6 +54,7 @@ def run_example():
     """Run a predefined example for testing."""
     print("Running example query...\n")
 
+    # Initialize the agent
     try:
         agent = DataAnalysisAgent()
         logger.info("Agent initialized successfully")
@@ -64,6 +63,7 @@ def run_example():
         print(f"Error: Could not initialize agent. Check your API credentials.")
         return
 
+    # Run the agent with the example query
     try:
         example_query = f"""
         {EXAMPLE_QUERY.strip()}
