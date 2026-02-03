@@ -1,5 +1,6 @@
 import subprocess
 import tempfile
+import sys
 import os
 from pathlib import Path
 import logging
@@ -25,17 +26,20 @@ class CodeSandbox:
         """    
 
         with tempfile.TemporaryDirectory() as temp_dir:
+            code_file = Path(temp_dir) / "script.py"
+            code_file.write_text(code)
+            
             try:
-                code_file = Path(temp_dir) / "script.py"
-                code_file.write_text(code)
-
                 result = subprocess.run(
-                    ["python", str(code_file)],
+                    [sys.executable, str(code_file)],
                     cwd=temp_dir,
                     timeout=self.timeout,
                     capture_output=True,
                     text=True,
-                    env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
+                    env={
+                        **os.environ,  
+                        "HOME": temp_dir,  
+                    }
                 )
 
                 plot_path = None    

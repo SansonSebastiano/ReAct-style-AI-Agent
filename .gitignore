@@ -11,3 +11,7 @@ assignment.txt
 example.ipynb
 
 logs/
+
+test_outputs/
+
+test_sandbox.py
