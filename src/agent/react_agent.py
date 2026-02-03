@@ -20,7 +20,7 @@ class DataAnalysisAgent:
         graph: The state graph defining the ReAct workflow.
     """
 
-    def __init__(self, model_name: str = "gemini-2.5-flash", max_iterations: int = 10):
+    def __init__(self, model_name: str = "gemini-2.5-flash", max_iterations: int = 5):
         # Get API key from environment variable
         api_key = os.getenv("GOOGLE_API_KEY")
 
@@ -86,7 +86,7 @@ class DataAnalysisAgent:
         - Break complex tasks into steps if needed
         - If execution fails, analyze the error and adjust your approach
 
-        When you have completed the task successfully, respond with "TASK_COMPLETE" followed by a summary."""
+        When you have completed the task successfully, respond with "TASK_COMPLETE"."""
 
         messages = [SystemMessage(content=system_prompt)] + state["messages"]   # Inject system prompt before the conversation history
         
@@ -127,11 +127,11 @@ class DataAnalysisAgent:
 
         **Requirements:**
         - Include all necessary imports
-        - Save Plotly figures as 'output.html' using: fig.write_html('output.html')
+        - Save Plotly figures as 'output.html' using: fig.write_html('output_<time_stamp>.html')
         - Include error handling where appropriate
         - Add comments to explain key steps
 
-        Respond with ONLY the Python code, wrapped in ```python code blocks."""
+        Respond with ONLY the Python code, wrapped in ```python <code blocks>```."""
 
         messages = state["messages"] + [HumanMessage(content=code_prompt)]  # Append code generation prompt to conversation history
         response = self.llm.invoke(messages)
@@ -186,7 +186,7 @@ class DataAnalysisAgent:
         code = None
         for msg in reversed(state["messages"]):
             if hasattr(msg, 'content') and "CODE_TO_EXECUTE:" in msg.content:
-                code = msg.content.split("CODE_TO_EXECUTE:", 1)[1].strip()  # Retrieve code part
+                code = msg.content.split("CODE_TO_EXECUTE:", 1)[1].strip()  # Retrieved code part
                 break
         
         if not code:
@@ -195,7 +195,7 @@ class DataAnalysisAgent:
             # Execute the code
             observation = execute_python_code.invoke({"code": code})
 
-            # If execution was successful AND plot was generated, mark task as complete
+            # If execution was successful AND plot was generated, task marked as complete
             task_complete = (
                 "Code executed successfully" in observation 
                 and "Generated plot available at:" in observation
@@ -281,7 +281,7 @@ class DataAnalysisAgent:
             "max_iterations": self.max_iterations,
             "task_complete": False
         }
-        # Start the ReAct loop
+        # Start the loop
         final_state = self.graph.invoke(initial_state)
         # End of the loop
         logger.info("ReAct agent completed")

@@ -13,8 +13,7 @@ from src.agent.react_agent import DataAnalysisAgent
 # Alternative possible queries:
 # - "Analyze the iris dataset and create a scatter plot of sepal length vs sepal width, colored by species."
 EXAMPLE_QUERY = """
-Create a line chart showing the trend of sales data over 12 months.
-Use sample data: January through December with values [100, 120, 140, 130, 150, 170, 180, 190, 200, 210, 220, 240].
+Create a line chart showing the trend of sales data over 12 months. Use sample data: January through December with values [100, 120, 140, 130, 150, 170, 180, 190, 200, 210, 220, 240].
 """
 
 load_dotenv()
