@@ -38,8 +38,7 @@ class CodeSandbox:
                     text=True,
                     env={
                         **os.environ,  
-                        "HOME": temp_dir,  
-                        "PYTHONUNBUFFERED": "1",
+                        "HOME": temp_dir,           # Override HOME to `temp_dir` for isolation
                     }
                 )
 
