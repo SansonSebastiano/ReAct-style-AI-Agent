@@ -1,8 +1,10 @@
 from langchain_core.tools import tool
 from pydantic import BaseModel, Field
+import logging
 
 from .sandbox import CodeSandbox
 
+logger = logging.getLogger(__name__)
 sandbox = CodeSandbox(timeout=30)
 
 class CodeInput(BaseModel):
@@ -19,6 +21,7 @@ def execute_python_code(code: str) -> str:
         str: The output of the code execution or error message.    
     """
 
+    logger.info(f"Executing code:\n{code[:200]}...")
     result = sandbox.execute_code(code)
 
     if result["success"]:

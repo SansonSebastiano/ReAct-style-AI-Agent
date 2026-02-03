@@ -28,7 +28,7 @@ class CodeSandbox:
         with tempfile.TemporaryDirectory() as temp_dir:
             code_file = Path(temp_dir) / "script.py"
             code_file.write_text(code)
-            
+
             try:
                 result = subprocess.run(
                     [sys.executable, str(code_file)],
@@ -39,8 +39,13 @@ class CodeSandbox:
                     env={
                         **os.environ,  
                         "HOME": temp_dir,  
+                        "PYTHONUNBUFFERED": "1",
                     }
                 )
+
+                logger.info(f"Return code: {result.returncode}")
+                logger.info(f"Stdout length: {len(result.stdout)}")
+                logger.info(f"Stderr length: {len(result.stderr)}")
 
                 plot_path = None    
                 output_file = Path(temp_dir) / "output.html"
